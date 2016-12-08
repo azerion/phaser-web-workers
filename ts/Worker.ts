@@ -25,8 +25,8 @@ module Fabrique {
                 this.onMessage.dispatch(e);
             };
         }
-        public postMessage(...args: any[]): void {
-            this.worker.postMessage(args);
+        public postMessage(data: any, transferList?: any[]): void {
+            this.worker.postMessage(data, transferList);
         }
 
         public destroy(): void {

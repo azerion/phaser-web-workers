@@ -44,7 +44,7 @@ declare module Fabrique {
         game: PhaserExtensions.IWebWorkerGame;
         onMessage: Phaser.Signal;
         constructor(game: PhaserExtensions.IWebWorkerGame, key: string);
-        postMessage(...args: any[]): void;
+        postMessage(data: any, transferList?: any[]): void;
         destroy(): void;
     }
 }

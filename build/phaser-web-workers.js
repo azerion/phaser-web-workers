@@ -1,5 +1,5 @@
 /*!
- * phaser-web-workers - version 0.0.3 
+ * phaser-web-workers - version 0.0.4 
  * A simple Phaser plugin that allows you to easily integrate Web Workers in your game
  *
  * OrangeGames
@@ -94,12 +94,8 @@ var Fabrique;
                 _this.onMessage.dispatch(e);
             };
         }
-        WebWorker.prototype.postMessage = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i - 0] = arguments[_i];
-            }
-            this.worker.postMessage(args);
+        WebWorker.prototype.postMessage = function (data, transferList) {
+            this.worker.postMessage(data, transferList);
         };
         WebWorker.prototype.destroy = function () {
             this.worker.terminate();

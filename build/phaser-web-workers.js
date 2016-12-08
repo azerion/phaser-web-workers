@@ -1,3 +1,12 @@
+/*!
+ * phaser-web-workers - version 0.0.2 
+ * A simple Phaser plugin that allows you to easily integrate Web Workers in your game
+ *
+ * OrangeGames
+ * Build at 08-12-2016
+ * Released under MIT License 
+ */
+
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -11,21 +20,25 @@ var Fabrique;
             __extends(WebWorkers, _super);
             function WebWorkers(game, pluginManager, region, IdentityPoolId) {
                 _super.call(this, game, pluginManager);
-                this.workers = [];
                 this.addWorkerLoader();
                 this.addWorkerFactory();
                 this.addWorkerCache();
             }
             WebWorkers.prototype.addWorkerLoader = function () {
                 Phaser.Loader.prototype.worker = function (key, url, callback, callbackContext) {
+                    var _this = this;
                     if (callback === undefined) {
                         callback = false;
                     }
                     if (callback !== false && callbackContext === undefined) {
                         callbackContext = this;
                     }
-                    this.game.cache.addWorker(key, url);
-                    return this.addToFileList('script', key, url, { syncPoint: true, callback: callback, callbackContext: callbackContext }, false, '.js');
+                    return this.addToFileList('script', key, url, {
+                        syncPoint: true, callback: function (scriptKey, data) {
+                            var workerBlob = new Blob([data], { type: 'javascript/worker' });
+                            _this.game.cache.addWorker(scriptKey, window.URL.createObjectURL(workerBlob));
+                        }, callbackContext: callbackContext
+                    }, false, '.js');
                 };
             };
             WebWorkers.prototype.addWorkerFactory = function () {
@@ -42,6 +55,13 @@ var Fabrique;
                 //Method for adding a spine dict to the cache space
                 Phaser.Cache.prototype.addWorker = function (key, url) {
                     this._workers[key] = url;
+                };
+                //Method for adding a spine dict to the cache space
+                Phaser.Cache.prototype.removeWorker = function (key) {
+                    if (this._workers.hasOwnProperty(key)) {
+                        window.URL.revokeObjectURL(this._workers[key]);
+                        delete this._workers[key];
+                    }
                 };
                 //Method for fetching a spine dict from the cache space
                 Phaser.Cache.prototype.getWorker = function (key) {

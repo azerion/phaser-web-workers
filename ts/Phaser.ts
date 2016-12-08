@@ -1,28 +1,29 @@
 module Fabrique {
     export module PhaserExtensions {
-        export interface WebWorkerObjectFactory extends Phaser.GameObjectFactory {
+        export interface IWebWorkerObjectFactory extends Phaser.GameObjectFactory {
             worker: (key: string) => Fabrique.WebWorker;
         }
-        export interface WebWorkerObjectCreator extends Phaser.GameObjectCreator {
+        export interface IWebWorkerObjectCreator extends Phaser.GameObjectCreator {
             worker: (key: string) => Fabrique.WebWorker;
         }
 
-        export interface WebWorkerCache extends Phaser.Cache {
-            addWorker: (key:string, data:string) => void;
-            getWorker: (key:string) => string;
+        export interface IWebWorkerCache extends Phaser.Cache {
+            addWorker: (key: string, data: string) => void;
+            getWorker: (key: string) => string;
+            removeWorker: (key: string) => void;
             _workers: {[key: string]: string};
         }
 
-        export interface WebWorkerLoader extends Phaser.Loader {
-            worker: (key:string, url:string, callback: () => void, callbackContext: any) => void;
-            cache: WebWorkerCache;
+        export interface IWebWorkerLoader extends Phaser.Loader {
+            worker: (key: string, url: string, callback: () => void, callbackContext: any) => void;
+            cache: IWebWorkerCache;
         }
 
         export interface IWebWorkerGame extends Phaser.Game {
-            add: WebWorkerObjectFactory;
-            make: WebWorkerObjectCreator;
-            load: WebWorkerLoader;
-            cache: WebWorkerCache;
+            add: IWebWorkerObjectFactory;
+            make: IWebWorkerObjectCreator;
+            load: IWebWorkerLoader;
+            cache: IWebWorkerCache;
         }
     }
 }

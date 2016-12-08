@@ -23,9 +23,9 @@ module Fabrique {
 
             this.worker.onmessage = (e: Event) => {
                 this.onMessage.dispatch(e);
-            }
+            };
         }
-        public postMessage(...args: any[]) {
+        public postMessage(...args: any[]): void {
             this.worker.postMessage(args);
         }
 

@@ -1,7 +1,7 @@
 module Fabrique {
     export module Plugins {
         export class WebWorkers extends Phaser.Plugin {
-            private workers: {[key: string]: WebWorker}[] = [];
+            public game: PhaserExtensions.IWebWorkerGame;
 
             constructor(game: PhaserExtensions.IWebWorkerGame, pluginManager: Phaser.PluginManager, region: string, IdentityPoolId: string) {
                 super(game, pluginManager);
@@ -11,8 +11,8 @@ module Fabrique {
                 this.addWorkerCache();
             }
 
-            private addWorkerLoader() {
-                (<PhaserExtensions.WebWorkerLoader>Phaser.Loader.prototype).worker = function(key: string, url: string, callback: boolean | any, callbackContext: any) {
+            private addWorkerLoader(): void {
+                (<PhaserExtensions.IWebWorkerLoader>Phaser.Loader.prototype).worker = function (key: string, url: string, callback: boolean | any, callbackContext: any): void {
                     if (callback === undefined) {
                         callback = false;
                     }
@@ -21,35 +21,44 @@ module Fabrique {
                         callbackContext = this;
                     }
 
-                    this.game.cache.addWorker(key, url);
-
-                    return this.addToFileList('script', key, url, { syncPoint: true, callback: callback, callbackContext: callbackContext }, false, '.js');
+                    return this.addToFileList('script', key, url, {
+                        syncPoint: true, callback: (scriptKey: string, data: string) => {
+                            let workerBlob: Blob = new Blob([data], {type: 'javascript/worker'});
+                            this.game.cache.addWorker(scriptKey, window.URL.createObjectURL(workerBlob));
+                        }, callbackContext: callbackContext
+                    }, false, '.js');
                 };
             }
 
-            private addWorkerFactory() {
-                (<PhaserExtensions.WebWorkerObjectFactory>Phaser.GameObjectFactory.prototype).worker = function (key: string):Fabrique.WebWorker {
+            private addWorkerFactory(): void {
+                (<PhaserExtensions.IWebWorkerObjectFactory>Phaser.GameObjectFactory.prototype).worker = function (key: string): Fabrique.WebWorker {
                     return new Fabrique.WebWorker(this.game, key);
                 };
 
-                (<PhaserExtensions.WebWorkerObjectCreator>Phaser.GameObjectCreator.prototype).worker = function (key: string):Fabrique.WebWorker {
+                (<PhaserExtensions.IWebWorkerObjectCreator>Phaser.GameObjectCreator.prototype).worker = function (key: string): Fabrique.WebWorker {
                     return new Fabrique.WebWorker(this.game, key);
                 };
             }
 
             private addWorkerCache(): void {
                 //Create the cache space
-                (<PhaserExtensions.WebWorkerCache>Phaser.Cache.prototype)._workers = {};
+                (<PhaserExtensions.IWebWorkerCache>Phaser.Cache.prototype)._workers = {};
 
                 //Method for adding a spine dict to the cache space
-                (<PhaserExtensions.WebWorkerCache>Phaser.Cache.prototype).addWorker = function(key: string, url: string)
-                {
+                (<PhaserExtensions.IWebWorkerCache>Phaser.Cache.prototype).addWorker = function (key: string, url: string): void {
                     this._workers[key] = url;
                 };
 
+                //Method for adding a spine dict to the cache space
+                (<PhaserExtensions.IWebWorkerCache>Phaser.Cache.prototype).removeWorker = function (key: string): void {
+                    if (this._workers.hasOwnProperty(key)) {
+                        window.URL.revokeObjectURL(this._workers[key]);
+                        delete this._workers[key];
+                    }
+                };
+
                 //Method for fetching a spine dict from the cache space
-                (<PhaserExtensions.WebWorkerCache>Phaser.Cache.prototype).getWorker = function(key: string): string
-                {
+                (<PhaserExtensions.IWebWorkerCache>Phaser.Cache.prototype).getWorker = function (key: string): string {
                     if (!this._workers.hasOwnProperty(key)) {
                         console.warn('Phaser.Cache.getWorker: Key "' + key + '" not found in Cache.');
                         return;

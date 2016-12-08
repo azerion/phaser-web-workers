@@ -15,7 +15,7 @@ module Fabrique {
         }
 
         export interface IWebWorkerLoader extends Phaser.Loader {
-            worker: (key: string, url: string, callback: () => void, callbackContext: any) => void;
+            worker: (key: string, url: string, callback?: () => void, callbackContext?: any) => void;
             cache: IWebWorkerCache;
         }
 

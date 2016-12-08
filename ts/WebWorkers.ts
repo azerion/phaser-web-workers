@@ -12,7 +12,7 @@ module Fabrique {
             }
 
             private addWorkerLoader(): void {
-                (<PhaserExtensions.IWebWorkerLoader>Phaser.Loader.prototype).worker = function (key: string, url: string, callback: boolean | any, callbackContext: any): void {
+                (<PhaserExtensions.IWebWorkerLoader>Phaser.Loader.prototype).worker = function (key: string, url: string, callback?: boolean | any, callbackContext?: any): void {
                     if (callback === undefined) {
                         callback = false;
                     }

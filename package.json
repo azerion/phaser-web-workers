@@ -1,7 +1,7 @@
 {
   "name": "@orange-games/phaser-web-workers",
   "author": "OrangeGames",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "A simple Phaser plugin that allows you to easily integrate Web Workers in your game",
   "contributors": [
     {
@@ -19,6 +19,9 @@
       "url": "https://github.com/orange-games/phaser-web-workers/raw/master/LICENSE"
     }
   ],
+  "config": {
+    "name": "phaser-web-workers"
+  },
   "devDependencies": {
     "grunt": "0.4.x",
     "grunt-banner": "^0.6.0",
@@ -30,9 +33,6 @@
     "grunt-tslint": "^3.3.0",
     "phaser": "2.6.2",
     "tslint": "^3.15.1",
-    "typescript": "2.0.x"
-  },
-  "engines": {
-    "node": "5.x.x"
+    "typescript": "2.1.x"
   }
 }

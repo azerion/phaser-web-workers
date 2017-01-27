@@ -1,10 +1,10 @@
-module Fabrique {
+module PhaserWebWorkers {
     export module PhaserExtensions {
         export interface IWebWorkerObjectFactory extends Phaser.GameObjectFactory {
-            worker: (key: string) => Fabrique.WebWorker;
+            worker: (key: string) => PhaserWebWorkers.WebWorker;
         }
         export interface IWebWorkerObjectCreator extends Phaser.GameObjectCreator {
-            worker: (key: string) => Fabrique.WebWorker;
+            worker: (key: string) => PhaserWebWorkers.WebWorker;
         }
 
         export interface IWebWorkerCache extends Phaser.Cache {

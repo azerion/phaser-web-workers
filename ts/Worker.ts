@@ -1,4 +1,4 @@
-module Fabrique {
+module PhaserWebWorkers {
     export class WebWorker {
         private worker: Worker;
 
@@ -7,6 +7,8 @@ module Fabrique {
         public game: PhaserExtensions.IWebWorkerGame;
 
         public onMessage: Phaser.Signal;
+
+        public onError: Phaser.Signal;
 
         constructor(game: PhaserExtensions.IWebWorkerGame, key: string) {
             this.game = game;
@@ -24,6 +26,10 @@ module Fabrique {
             this.worker.onmessage = (e: Event) => {
                 this.onMessage.dispatch(e);
             };
+
+            this.worker.onerror = (e: ErrorEvent) => {
+                this.onError.dispatch(e);
+            };
         }
         public postMessage(data: any, transferList?: any[]): void {
             this.worker.postMessage(data, transferList);
@@ -32,10 +38,12 @@ module Fabrique {
         public destroy(): void {
             this.worker.terminate();
             this.onMessage.dispose();
+            this.onError.dispose();
 
             this.name = null;
             this.worker = null;
             this.onMessage = null;
+            this.onError = null;
         }
     }
 }

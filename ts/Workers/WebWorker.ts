@@ -1,5 +1,5 @@
 module PhaserWebWorkers {
-    export class WebWorker {
+    export class WebWorker implements IWorker {
         private worker: Worker;
 
         private name: string;
@@ -22,6 +22,7 @@ module PhaserWebWorkers {
             this.worker = new Worker(url);
 
             this.onMessage = new Phaser.Signal();
+            this.onError = new Phaser.Signal();
 
             this.worker.onmessage = (e: Event) => {
                 this.onMessage.dispatch(e);

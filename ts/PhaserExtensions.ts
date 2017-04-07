@@ -1,10 +1,10 @@
 module PhaserWebWorkers {
     export module PhaserExtensions {
         export interface IWebWorkerObjectFactory extends Phaser.GameObjectFactory {
-            worker: (key: string) => PhaserWebWorkers.WebWorker;
+            worker: (key: string, testWorker: boolean) => PhaserWebWorkers.IWorker;
         }
         export interface IWebWorkerObjectCreator extends Phaser.GameObjectCreator {
-            worker: (key: string) => PhaserWebWorkers.WebWorker;
+            worker: (key: string, testWorker: boolean) => PhaserWebWorkers.IWorker;
         }
 
         export interface IWebWorkerCache extends Phaser.Cache {

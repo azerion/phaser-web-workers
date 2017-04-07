@@ -33,7 +33,7 @@ module.exports = function (grunt) {
         },
         watch: {
             files: ['ts/**/*.ts'],
-            tasks: ['ts'],
+            tasks: ['ts', 'tslint'],
             options: {
                 livereload: true
             }
@@ -88,18 +88,21 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-banner');
     grunt.loadNpmTasks('grunt-ts');
+    grunt.loadNpmTasks('grunt-tslint');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     //dist Build
     grunt.registerTask('dist', [
         'clean:dist',     //Clean the dist folder
+        'tslint',
         'ts:dist',//Run typescript on the preprocessed files, for dist (client)
         'uglify:dist',    //Minify everything
         'usebanner:dist'    //Minify everything
     ]);
 
     grunt.registerTask('dev', [
+        'tslint',
         'ts:dist',
         'connect',
         'watch'

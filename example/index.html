@@ -44,7 +44,7 @@
 
         function create(){
             //Create the worker from cache
-            var worker = game.make.worker('myWorker');
+            var worker = game.make.worker('myWorker', true);
             //Assign the message listener
             worker.onMessage.add(function (e) {
                 console.log('received worker data!', e);

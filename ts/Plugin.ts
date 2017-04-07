@@ -30,11 +30,18 @@ module PhaserWebWorkers {
         }
 
         private addWorkerFactory(): void {
-            (<PhaserExtensions.IWebWorkerObjectFactory>Phaser.GameObjectFactory.prototype).worker = function (key: string): WebWorker {
+            (<PhaserExtensions.IWebWorkerObjectFactory>Phaser.GameObjectFactory.prototype).worker = function (key: string, testWorker: boolean = false): IWorker {
+                if (testWorker) {
+                    return new PseudoWorker(this.game, key);
+                }
+
                 return new WebWorker(this.game, key);
             };
 
-            (<PhaserExtensions.IWebWorkerObjectCreator>Phaser.GameObjectCreator.prototype).worker = function (key: string): WebWorker {
+            (<PhaserExtensions.IWebWorkerObjectCreator>Phaser.GameObjectCreator.prototype).worker = function (key: string, testWorker: boolean = false): IWorker {
+                if (testWorker) {
+                    return new PseudoWorker(this.game, key);
+                }
                 return new WebWorker(this.game, key);
             };
         }

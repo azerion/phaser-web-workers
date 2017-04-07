@@ -1,7 +1,7 @@
 {
   "name": "@orange-games/phaser-web-workers",
   "author": "OrangeGames",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A simple Phaser plugin that allows you to easily integrate Web Workers in your game",
   "contributors": [
     {

@@ -1,4 +1,3 @@
-/// <reference path="../node_modules/@orange-games/phaser/typescript/phaser.d.ts" />
 declare module PhaserWebWorkers {
     interface IWorker {
         game: PhaserExtensions.IWebWorkerGame;

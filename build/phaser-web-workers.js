@@ -3,7 +3,7 @@
  * A simple Phaser plugin that allows you to easily integrate Web Workers in your game
  *
  * OrangeGames
- * Build at 07-04-2017
+ * Build at 21-02-2019
  * Released under MIT License 
  */
 
@@ -12,76 +12,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var PhaserWebWorkers;
-(function (PhaserWebWorkers) {
-    var Plugin = (function (_super) {
-        __extends(Plugin, _super);
-        function Plugin(game, pluginManager, region, IdentityPoolId) {
-            _super.call(this, game, pluginManager);
-            this.addWorkerLoader();
-            this.addWorkerFactory();
-            this.addWorkerCache();
-        }
-        Plugin.prototype.addWorkerLoader = function () {
-            Phaser.Loader.prototype.worker = function (key, url, callback, callbackContext) {
-                var _this = this;
-                if (callback === undefined) {
-                    callback = false;
-                }
-                if (callback !== false && callbackContext === undefined) {
-                    callbackContext = this;
-                }
-                return this.addToFileList('script', key, url, {
-                    syncPoint: true, callback: function (scriptKey, data) {
-                        var workerBlob = new Blob([data], { type: 'javascript/worker' });
-                        _this.game.cache.addWorker(scriptKey, window.URL.createObjectURL(workerBlob));
-                    }, callbackContext: callbackContext
-                }, false, '.js');
-            };
-        };
-        Plugin.prototype.addWorkerFactory = function () {
-            Phaser.GameObjectFactory.prototype.worker = function (key, testWorker) {
-                if (testWorker === void 0) { testWorker = false; }
-                if (testWorker) {
-                    return new PhaserWebWorkers.PseudoWorker(this.game, key);
-                }
-                return new PhaserWebWorkers.WebWorker(this.game, key);
-            };
-            Phaser.GameObjectCreator.prototype.worker = function (key, testWorker) {
-                if (testWorker === void 0) { testWorker = false; }
-                if (testWorker) {
-                    return new PhaserWebWorkers.PseudoWorker(this.game, key);
-                }
-                return new PhaserWebWorkers.WebWorker(this.game, key);
-            };
-        };
-        Plugin.prototype.addWorkerCache = function () {
-            //Create the cache space
-            Phaser.Cache.prototype._workers = {};
-            //Method for adding a spine dict to the cache space
-            Phaser.Cache.prototype.addWorker = function (key, url) {
-                this._workers[key] = url;
-            };
-            //Method for adding a spine dict to the cache space
-            Phaser.Cache.prototype.removeWorker = function (key) {
-                if (this._workers.hasOwnProperty(key)) {
-                    window.URL.revokeObjectURL(this._workers[key]);
-                    delete this._workers[key];
-                }
-            };
-            //Method for fetching a spine dict from the cache space
-            Phaser.Cache.prototype.getWorker = function (key) {
-                if (!this._workers.hasOwnProperty(key)) {
-                    console.warn('Phaser.Cache.getWorker: Key "' + key + '" not found in Cache.');
-                    return;
-                }
-                return this._workers[key];
-            };
-        };
-        return Plugin;
-    }(Phaser.Plugin));
-    PhaserWebWorkers.Plugin = Plugin;
-})(PhaserWebWorkers || (PhaserWebWorkers = {}));
+/// <reference path='../../node_modules/@orange-games/phaser/typescript/phaser.d.ts'/>
+/// <reference path='../PhaserExtensions.ts'/>
+/// <reference path='../node_modules/@orange-games/phaser/typescript/phaser.d.ts'/>
+/// <reference path='./Workers/IWorker.ts'/>
 var PhaserWebWorkers;
 (function (PhaserWebWorkers) {
     /**
@@ -252,6 +186,7 @@ var PhaserWebWorkers;
     }());
     PhaserWebWorkers.WorkerPolyfill = WorkerPolyfill;
 })(PhaserWebWorkers || (PhaserWebWorkers = {}));
+/// <reference path='../WorkerPolyfill.ts'/>
 var PhaserWebWorkers;
 (function (PhaserWebWorkers) {
     var PseudoWorker = (function () {
@@ -325,5 +260,79 @@ var PhaserWebWorkers;
         return WebWorker;
     }());
     PhaserWebWorkers.WebWorker = WebWorker;
+})(PhaserWebWorkers || (PhaserWebWorkers = {}));
+/// <reference path='./PhaserExtensions.ts'/>
+/// <reference path='./Workers/PseudoWorker.ts'/>
+/// <reference path='./Workers/WebWorker.ts'/>
+var PhaserWebWorkers;
+(function (PhaserWebWorkers) {
+    var Plugin = (function (_super) {
+        __extends(Plugin, _super);
+        function Plugin(game, pluginManager, region, IdentityPoolId) {
+            var _this = _super.call(this, game, pluginManager) || this;
+            _this.addWorkerLoader();
+            _this.addWorkerFactory();
+            _this.addWorkerCache();
+            return _this;
+        }
+        Plugin.prototype.addWorkerLoader = function () {
+            Phaser.Loader.prototype.worker = function (key, url, callback, callbackContext) {
+                var _this = this;
+                if (callback === undefined) {
+                    callback = false;
+                }
+                if (callback !== false && callbackContext === undefined) {
+                    callbackContext = this;
+                }
+                return this.addToFileList('script', key, url, {
+                    syncPoint: true, callback: function (scriptKey, data) {
+                        var workerBlob = new Blob([data], { type: 'javascript/worker' });
+                        _this.game.cache.addWorker(scriptKey, window.URL.createObjectURL(workerBlob));
+                    }, callbackContext: callbackContext
+                }, false, '.js');
+            };
+        };
+        Plugin.prototype.addWorkerFactory = function () {
+            Phaser.GameObjectFactory.prototype.worker = function (key, testWorker) {
+                if (testWorker === void 0) { testWorker = false; }
+                if (testWorker) {
+                    return new PhaserWebWorkers.PseudoWorker(this.game, key);
+                }
+                return new PhaserWebWorkers.WebWorker(this.game, key);
+            };
+            Phaser.GameObjectCreator.prototype.worker = function (key, testWorker) {
+                if (testWorker === void 0) { testWorker = false; }
+                if (testWorker) {
+                    return new PhaserWebWorkers.PseudoWorker(this.game, key);
+                }
+                return new PhaserWebWorkers.WebWorker(this.game, key);
+            };
+        };
+        Plugin.prototype.addWorkerCache = function () {
+            //Create the cache space
+            Phaser.Cache.prototype._workers = {};
+            //Method for adding a spine dict to the cache space
+            Phaser.Cache.prototype.addWorker = function (key, url) {
+                this._workers[key] = url;
+            };
+            //Method for adding a spine dict to the cache space
+            Phaser.Cache.prototype.removeWorker = function (key) {
+                if (this._workers.hasOwnProperty(key)) {
+                    window.URL.revokeObjectURL(this._workers[key]);
+                    delete this._workers[key];
+                }
+            };
+            //Method for fetching a spine dict from the cache space
+            Phaser.Cache.prototype.getWorker = function (key) {
+                if (!this._workers.hasOwnProperty(key)) {
+                    console.warn('Phaser.Cache.getWorker: Key "' + key + '" not found in Cache.');
+                    return;
+                }
+                return this._workers[key];
+            };
+        };
+        return Plugin;
+    }(Phaser.Plugin));
+    PhaserWebWorkers.Plugin = Plugin;
 })(PhaserWebWorkers || (PhaserWebWorkers = {}));
 //# sourceMappingURL=phaser-web-workers.js.map

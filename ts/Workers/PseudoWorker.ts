@@ -1,3 +1,5 @@
+/// <reference path='../WorkerPolyfill.ts'/>
+
 module PhaserWebWorkers {
     export class PseudoWorker implements IWorker {
         private worker: Worker;

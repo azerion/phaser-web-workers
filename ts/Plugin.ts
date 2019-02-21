@@ -1,3 +1,7 @@
+/// <reference path='./PhaserExtensions.ts'/>
+/// <reference path='./Workers/PseudoWorker.ts'/>
+/// <reference path='./Workers/WebWorker.ts'/>
+
 module PhaserWebWorkers {
     export class Plugin extends Phaser.Plugin {
         public game: PhaserExtensions.IWebWorkerGame;

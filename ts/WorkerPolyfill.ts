@@ -1,5 +1,3 @@
-declare var global: any;
-
 module PhaserWebWorkers {
     /**
      * PseudoWorker class based on the work of https://github.com/nolanlawson/pseudo-worker

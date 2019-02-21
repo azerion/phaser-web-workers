@@ -1,3 +1,6 @@
+/// <reference path='../node_modules/@orange-games/phaser/typescript/phaser.d.ts'/>
+/// <reference path='./Workers/IWorker.ts'/>
+
 module PhaserWebWorkers {
     export module PhaserExtensions {
         export interface IWebWorkerObjectFactory extends Phaser.GameObjectFactory {

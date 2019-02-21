@@ -1,3 +1,13 @@
+/// <reference path="../node_modules/@orange-games/phaser/typescript/phaser.d.ts" />
+declare module PhaserWebWorkers {
+    interface IWorker {
+        game: PhaserExtensions.IWebWorkerGame;
+        onMessage: Phaser.Signal;
+        onError: Phaser.Signal;
+        postMessage(data: any, transferList?: any[]): void;
+        destroy(): void;
+    }
+}
 declare module PhaserWebWorkers {
     module PhaserExtensions {
         interface IWebWorkerObjectFactory extends Phaser.GameObjectFactory {
@@ -26,16 +36,6 @@ declare module PhaserWebWorkers {
         }
     }
 }
-declare module PhaserWebWorkers {
-    class Plugin extends Phaser.Plugin {
-        game: PhaserExtensions.IWebWorkerGame;
-        constructor(game: PhaserExtensions.IWebWorkerGame, pluginManager: Phaser.PluginManager, region: string, IdentityPoolId: string);
-        private addWorkerLoader();
-        private addWorkerFactory();
-        private addWorkerCache();
-    }
-}
-declare var global: any;
 declare module PhaserWebWorkers {
     /**
      * PseudoWorker class based on the work of https://github.com/nolanlawson/pseudo-worker
@@ -73,15 +73,6 @@ declare module PhaserWebWorkers {
     }
 }
 declare module PhaserWebWorkers {
-    interface IWorker {
-        game: PhaserExtensions.IWebWorkerGame;
-        onMessage: Phaser.Signal;
-        onError: Phaser.Signal;
-        postMessage(data: any, transferList?: any[]): void;
-        destroy(): void;
-    }
-}
-declare module PhaserWebWorkers {
     class PseudoWorker implements IWorker {
         private worker;
         private name;
@@ -103,5 +94,14 @@ declare module PhaserWebWorkers {
         constructor(game: PhaserExtensions.IWebWorkerGame, key: string);
         postMessage(data: any, transferList?: any[]): void;
         destroy(): void;
+    }
+}
+declare module PhaserWebWorkers {
+    class Plugin extends Phaser.Plugin {
+        game: PhaserExtensions.IWebWorkerGame;
+        constructor(game: PhaserExtensions.IWebWorkerGame, pluginManager: Phaser.PluginManager, region: string, IdentityPoolId: string);
+        private addWorkerLoader();
+        private addWorkerFactory();
+        private addWorkerCache();
     }
 }

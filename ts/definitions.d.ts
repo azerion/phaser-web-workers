@@ -1,1 +1,1 @@
-/// <reference path='../node_modules/@orange-games/phaser/typescript/phaser.d.ts'/>
+/// <reference path='../node_modules/@azerion/phaser/typescript/phaser.d.ts'/>

@@ -2,8 +2,8 @@
  * phaser-web-workers - version 0.2.1 
  * A simple Phaser plugin that allows you to easily integrate Web Workers in your game
  *
- * OrangeGames
- * Build at 25-02-2019
+ * Azerion
+ * Build at 02-07-2019
  * Released under MIT License 
  */
 

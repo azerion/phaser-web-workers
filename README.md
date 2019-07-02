@@ -7,7 +7,7 @@ Getting Started
 ---------------
 First you want to get a fresh copy of the plugin. You can get it from this repo or from npm, ain't that handy.
 ```
-npm install @orange-games/phaser-web-workers --save-dev
+npm install @azerion/phaser-web-workers --save-dev
 ```
 
 Next up you'd want to add it to your list of js sources you load into your game
@@ -15,7 +15,7 @@ Next up you'd want to add it to your list of js sources you load into your game
 <!-- Local installation -->
 <script src="node_modules/phaser-input/build/phaser-web-workers.js"></script>
 
-<!-- OrangeGames' CDN -->
+<!-- Azerions' CDN -->
 <script src="//cdn.fbrq.io/phaser-web-workers/v0.1.0/phaser-web-workers.min.js"></script> <!-- Latest -->
 ```
 
@@ -67,7 +67,7 @@ Browser Support
 
 Disclaimer
 ----------
-We at OrangeGames just love playing and creating awesome games. We aren't affiliated with Phaser.io. We just needed some awesome web worker compatibility in our awesome HTML5 games. Feel free to use it for enhancing your own awesome games!
+We at Azerion just love playing and creating awesome games. We aren't affiliated with Phaser.io. We just needed some awesome web worker compatibility in our awesome HTML5 games. Feel free to use it for enhancing your own awesome games!
 
 Phaser Web Workers is distributed under the MIT license. All 3rd party libraries and components are distributed under their
 respective license terms.
